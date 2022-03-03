@@ -101,8 +101,11 @@ export const fetchCartData = createAsyncThunk(
       throw new Error('Could not fetch cart data');
     }
     const data = await response.json();
-
-    return data;
+    if (data.totalQuantity === 0) {
+      return thunkApi.rejectWithValue({ totalQuantity: 0, items: [] });
+    } else {
+      return data;
+    }
   }
 );
 
